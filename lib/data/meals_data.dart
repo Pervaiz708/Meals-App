@@ -1,7 +1,7 @@
 import 'package:mealsapp/model/meals_catagory.dart';
 
 final currentMeals = [
-MealsCatagory(
+  MealsCatagory(
     id: 'm1',
     categories: [
       'c1',

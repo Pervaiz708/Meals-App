@@ -18,8 +18,6 @@ class MealsItem extends StatelessWidget {
         meals.affordability.name.substring(1);
   }
 
-  
-
   @override
   Widget build(BuildContext context) {
     return Card(
@@ -28,7 +26,7 @@ class MealsItem extends StatelessWidget {
       clipBehavior: Clip.hardEdge,
       elevation: 2,
       child: InkWell(
-        onTap: (){
+        onTap: () {
           selectedMeal(meals);
         },
         child: Stack(

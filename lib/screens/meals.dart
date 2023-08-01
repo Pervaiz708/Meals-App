@@ -4,26 +4,27 @@ import 'package:mealsapp/widgets/meals_item.dart';
 import 'meal_details.dart';
 
 class Meals extends StatelessWidget {
-  const Meals(
-      {super.key,
-      this.title,
-      required this.meal,
-      });
+  const Meals({
+    super.key,
+    this.title,
+    required this.meal,
+  });
 
   final String? title;
   final List<MealsCatagory> meal;
-  
 
   void onSelectMealItem(BuildContext context, MealsCatagory meal) {
-    Navigator.of(context)
-        .push(MaterialPageRoute(builder: (ctx) => MealDetails(meals: meal,)));
+    Navigator.of(context).push(MaterialPageRoute(
+        builder: (ctx) => MealDetails(
+              meals: meal,
+            )));
   }
+
   @override
   Widget build(BuildContext context) {
     Widget content = ListView.builder(
         itemCount: meal.length,
-        itemBuilder: (ctx, index) 
-        => Text(meal[index].title)
+        itemBuilder: (ctx, index) => Text(meal[index].title)
         // Text(meals[index].origin);
         );
     if (meal.isEmpty) {
@@ -41,21 +42,18 @@ class Meals extends StatelessWidget {
       );
     } else {
       content = ListView.builder(
-          itemCount: meal.length,
-          itemBuilder: (ctx, index) 
-          => MealsItem(meals: meal[index], selectedMeal: (meals){
+        itemCount: meal.length,
+        itemBuilder: (ctx, index) => MealsItem(
+          meals: meal[index],
+          selectedMeal: (meals) {
             onSelectMealItem(context, meals);
-          },),
-          );
+          },
+        ),
+      );
     }
-    if(title == null){
+    if (title == null) {
       return content;
     }
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(title!)
-        ), 
-        body: content
-        );
+    return Scaffold(appBar: AppBar(title: Text(title!)), body: content);
   }
 }

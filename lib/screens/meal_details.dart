@@ -6,41 +6,35 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sqflite/sqflite.dart' as sql;
 import 'package:sqflite/sqlite_api.dart';
 
-Future<Database> getDatabase() async{
+Future<Database> getDatabase() async {
   final dbpath = await sql.getDatabasesPath();
   final db = await sql.openDatabase(
     dbpath,
-    onCreate:(db, version){
+    onCreate: (db, version) {
       return db.execute(
-        'CREATE TABLE MEALSDB(id TEXT PRIMARY KEY, title TEXT, image TEXT, duration TEXT, ingredients TEXT, steps TEXT, isFavorite BOOLEAN)'
-      );
+          'CREATE TABLE MEALSDB(id TEXT PRIMARY KEY, title TEXT, image TEXT, duration TEXT, ingredients TEXT, steps TEXT, isFavorite BOOLEAN)');
     },
     version: 1,
-    );
-    return db;
+  );
+  return db;
 }
 
 class MealDetails extends ConsumerWidget {
-  const MealDetails(
-      {
-        super.key,
-      required this.meals
-      });
+  const MealDetails({super.key, required this.meals});
   final MealsCatagory meals;
 
   void insertmeals(MealsCatagory meals, WidgetRef ref) async {
-  final db = await getDatabase();
-  final isFavorite = ref.read(favoriteMealsProvider).contains(meals);
-  db.insert('MEALSDB',{
-    'id': meals.id,
-    'title': meals.title,
-    'image': meals.imageUrl,
-    'duration':meals.duration,
-    'ingredients': meals.ingredients,
-    'steps': meals.steps,
-    'isFavorite': isFavorite
-
-  });
+    final db = await getDatabase();
+    final isFavorite = ref.read(favoriteMealsProvider).contains(meals);
+    db.insert('MEALSDB', {
+      'id': meals.id,
+      'title': meals.title,
+      'image': meals.imageUrl,
+      'duration': meals.duration,
+      'ingredients': meals.ingredients,
+      'steps': meals.steps,
+      'isFavorite': isFavorite
+    });
   }
 
   @override
@@ -53,13 +47,16 @@ class MealDetails extends ConsumerWidget {
         actions: [
           IconButton(
               onPressed: () {
-               final isfavourited = ref.read(favoriteMealsProvider.notifier).onFavoriteMeals(meals);
-               ScaffoldMessenger.of(context).clearSnackBars();
-               ScaffoldMessenger.of(context).showSnackBar(
-                 SnackBar(content: Text(isfavourited? 'Meals Added To Favorite':'Meals Romoved From Favorite'))
-               );
+                final isfavourited = ref
+                    .read(favoriteMealsProvider.notifier)
+                    .onFavoriteMeals(meals);
+                ScaffoldMessenger.of(context).clearSnackBars();
+                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                    content: Text(isfavourited
+                        ? 'Meals Added To Favorite'
+                        : 'Meals Romoved From Favorite')));
               },
-              icon: Icon(isfavorited ?Icons.star:Icons.star_border_outlined))
+              icon: Icon(isfavorited ? Icons.star : Icons.star_border_outlined))
         ],
       ),
       body: SingleChildScrollView(
